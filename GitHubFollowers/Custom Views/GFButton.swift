@@ -32,7 +32,7 @@ class GFButton: UIButton {
         
         layer.cornerRadius = 10
         
-        titleLabel?.textColor = .white
+        setTitleColor(.white, for: .normal)
         // forTextStyle -> dynamic type (support for dark & light mode)
         titleLabel?.font = UIFont.preferredFont(forTextStyle: .headline)
     }

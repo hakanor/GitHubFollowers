@@ -24,6 +24,10 @@
 		A7E582A72BA1C09600A7766E /* GFBodyLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582A62BA1C09600A7766E /* GFBodyLabel.swift */; };
 		A7E582A92BA1C18700A7766E /* GFAlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582A82BA1C18700A7766E /* GFAlertVC.swift */; };
 		A7E582AB2BA1CD4000A7766E /* UIViewController+Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582AA2BA1CD4000A7766E /* UIViewController+Alert.swift */; };
+		A7E582B22BA200C500A7766E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582B12BA200C500A7766E /* User.swift */; };
+		A7E582B42BA2013B00A7766E /* Follower.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582B32BA2013B00A7766E /* Follower.swift */; };
+		A7E582B72BA2046C00A7766E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582B62BA2046C00A7766E /* NetworkManager.swift */; };
+		A7E582BA2BA213F900A7766E /* GFError.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7E582B92BA213F900A7766E /* GFError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +69,10 @@
 		A7E582A62BA1C09600A7766E /* GFBodyLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFBodyLabel.swift; sourceTree = "<group>"; };
 		A7E582A82BA1C18700A7766E /* GFAlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFAlertVC.swift; sourceTree = "<group>"; };
 		A7E582AA2BA1CD4000A7766E /* UIViewController+Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Alert.swift"; sourceTree = "<group>"; };
+		A7E582B12BA200C500A7766E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		A7E582B32BA2013B00A7766E /* Follower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Follower.swift; sourceTree = "<group>"; };
+		A7E582B62BA2046C00A7766E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		A7E582B92BA213F900A7766E /* GFError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GFError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,10 +123,14 @@
 		A7DD5BD02BA0BB49002897E0 /* GitHubFollowers */ = {
 			isa = PBXGroup;
 			children = (
+				A7E582B82BA213E800A7766E /* Utilities */,
+				A7E582B52BA2045F00A7766E /* Managers */,
+				A7E582B02BA200BB00A7766E /* Model */,
 				A7E582AF2BA1FD1800A7766E /* App */,
 				A7E582AC2BA1FC5800A7766E /* Screens */,
 				A7E582AE2BA1FCEE00A7766E /* Custom Views */,
 				A7E582AD2BA1FCE800A7766E /* Extensions */,
+				A7DD5BDF2BA0BB4A002897E0 /* Info.plist */,
 			);
 			path = GitHubFollowers;
 			sourceTree = "<group>";
@@ -178,9 +190,33 @@
 				A7DD5BD32BA0BB49002897E0 /* SceneDelegate.swift */,
 				A7DD5BDA2BA0BB4A002897E0 /* Assets.xcassets */,
 				A7DD5BDC2BA0BB4A002897E0 /* LaunchScreen.storyboard */,
-				A7DD5BDF2BA0BB4A002897E0 /* Info.plist */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A7E582B02BA200BB00A7766E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				A7E582B12BA200C500A7766E /* User.swift */,
+				A7E582B32BA2013B00A7766E /* Follower.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		A7E582B52BA2045F00A7766E /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				A7E582B62BA2046C00A7766E /* NetworkManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		A7E582B82BA213E800A7766E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				A7E582B92BA213F900A7766E /* GFError.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,6 +349,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7E582B22BA200C500A7766E /* User.swift in Sources */,
+				A7E582B42BA2013B00A7766E /* Follower.swift in Sources */,
 				A7DD5C062BA0C574002897E0 /* SearchVC.swift in Sources */,
 				A7DD5C082BA0C95B002897E0 /* MainTabBarController.swift in Sources */,
 				A7DD5C0C2BA0D39C002897E0 /* GFButton.swift in Sources */,
@@ -323,6 +361,8 @@
 				A7DD5BD42BA0BB49002897E0 /* SceneDelegate.swift in Sources */,
 				A7E582A52BA1B10F00A7766E /* GFTitleLabel.swift in Sources */,
 				A7DD5C102BA1015A002897E0 /* FollowerListVC.swift in Sources */,
+				A7E582BA2BA213F900A7766E /* GFError.swift in Sources */,
+				A7E582B72BA2046C00A7766E /* NetworkManager.swift in Sources */,
 				A7DD5C0E2BA0F324002897E0 /* GFTextField.swift in Sources */,
 				A7E582A72BA1C09600A7766E /* GFBodyLabel.swift in Sources */,
 			);
@@ -500,7 +540,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RZB5WTQ7UH;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GitHubFollowers/App/Info.plist;
+				INFOPLIST_FILE = GitHubFollowers/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -532,7 +572,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = RZB5WTQ7UH;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = GitHubFollowers/App/Info.plist;
+				INFOPLIST_FILE = GitHubFollowers/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
