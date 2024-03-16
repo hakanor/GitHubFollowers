@@ -11,21 +11,32 @@ class FollowerListVC: UIViewController {
     
     //MARK: - Properties
     var username: String!
-
+    
+    //MARK: - Subviews
+    private var textLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
         
-        NetworkManager.shared.getFollowers(for: username, page: 1) { result in
-            switch result {
-            case .success(let followers):
-                print(followers)
-            case .failure(let errorMessage):
-                let ererrorMessageRaw = errorMessage.rawValue
-                self.presentGFAlertOnMainThread(title: ererrorMessageRaw, message: ererrorMessageRaw, buttonTitle: "OK")
-            }
+        view.addSubview(textLabel)
+        textLabel.frame = view.frame
+        
+        NSLayoutConstraint.activate([
+            textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        
+        Task {
+            let followers = try await NetworkProvider.shared.execute(GetFollowersRequest(username: "hakanor", page: 1))
+            self.textLabel.text = followers.first?.login
         }
     }
     
