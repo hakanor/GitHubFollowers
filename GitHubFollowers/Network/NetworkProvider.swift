@@ -59,6 +59,3 @@ final class NetworkProvider: NetworkProvidable {
         return data
     }
 }
-
-
-
