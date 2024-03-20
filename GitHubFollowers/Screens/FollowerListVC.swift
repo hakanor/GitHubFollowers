@@ -83,10 +83,17 @@ class FollowerListVC: UIViewController {
     
     private func getFollowers(username: String, page: Int) {
         Task {
+            showLoadingView()
             let followersFromRequest = try await NetworkProvider.shared.execute(GetFollowersRequest(username: username, page: page))
             // our network call request 100 followers
             if followersFromRequest.count < 100 { hasMoreFollowers = false }
             followers.append(contentsOf: followersFromRequest)
+            dismissLoadingView()
+            if self.followers.isEmpty {
+                let message = "This user doesn't have any followers."
+                showEmptyStateView(with: message, in: self.view)
+                return
+            }
             updateData()
         }
     }

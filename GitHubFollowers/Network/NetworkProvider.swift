@@ -21,6 +21,7 @@ final class NetworkProvider: NetworkProvidable {
     
     func execute<T: Requestable>(_ request: T) async throws -> T.Response  {
         
+        #warning("invalidResponse")
         let urlRequest = try RequestAdapter().adapt(request)
         
         let (data, response) = try await session.data(for: urlRequest)
