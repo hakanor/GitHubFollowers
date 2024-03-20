@@ -45,6 +45,18 @@ final class NetworkProvider: NetworkProvidable {
             throw NetworkError.invalidData
         }
     }
+    
+    func fetch(_ url: String) async throws -> Data {
+        
+        guard let url = URL(string: url) else { throw NetworkError.invalidURL }
+        let (data, response) = try await session.data(from: url)
+                
+        guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+            throw NetworkError.invalidResponse
+        }
+        
+        return data
+    }
 }
 
 
