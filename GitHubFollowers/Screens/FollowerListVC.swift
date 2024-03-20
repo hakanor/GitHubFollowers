@@ -91,14 +91,24 @@ class FollowerListVC: UIViewController {
         snapshot.appendSections([.main])
         // add items to snapshot
         snapshot.appendItems(followers)
-        //dispatchQueue gerekebilir.
-        dataSource.apply(snapshot, animatingDifferences: true)
+        // apply
+        DispatchQueue.main.async {
+            self.dataSource.apply(snapshot, animatingDifferences: true)
+        }
     }
     
     private func getFollowers(username: String, page: Int) {
         Task {
             showLoadingView()
-            let followersFromRequest = try await NetworkProvider.shared.execute(GetFollowersRequest(username: username, page: page))
+            var followersFromRequest : [Follower] = []
+            do {
+                followersFromRequest = try await NetworkProvider.shared.execute(GetFollowersRequest(username: username, page: page))
+            } catch {
+                let networkError = error as? NetworkError
+                dismissLoadingView()
+                presentGFAlertOnMainThread(title: "Error", message: networkError?.rawValue ?? "Error", buttonTitle: "OK")
+                return
+            }
             // our network call request 100 followers
             if followersFromRequest.count < 100 { hasMoreFollowers = false }
             followers.append(contentsOf: followersFromRequest)
@@ -128,7 +138,7 @@ extension FollowerListVC: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let activeArray = isSearching ? filteredFollowers : followers
-        let follower = followers[indexPath.item]
+        let follower = activeArray[indexPath.item]
         
         let vc = UserInfoVC(username: follower.login)
         let navController = UINavigationController(rootViewController: vc)

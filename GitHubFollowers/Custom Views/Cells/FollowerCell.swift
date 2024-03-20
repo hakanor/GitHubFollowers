@@ -36,7 +36,7 @@ class FollowerCell: UICollectionViewCell {
         }
         
         Task {
-            //downloand image
+            //download image
             let imageData = try await networkProvider.fetch(follower.avatarUrl)
             let image = UIImage(data: imageData)
             
@@ -44,6 +44,10 @@ class FollowerCell: UICollectionViewCell {
             imageLoader.insert(urlString: follower.avatarUrl, image: image)
             avatarImageView.image = image
         }
+    }
+    
+    override func prepareForReuse() {
+        avatarImageView.image = nil
     }
     
     private func configure() {
