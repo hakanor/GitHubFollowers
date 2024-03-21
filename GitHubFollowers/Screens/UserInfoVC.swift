@@ -7,14 +7,22 @@
 
 import UIKit
 
+protocol UserInfoVCDelegate: AnyObject {
+    func didTapGitHubProfile(for user: User)
+    func didTapGetFollowers(for user: User)
+}
+
 class UserInfoVC: UIViewController {
     
     let headerView = UIView()
     let itemViewOne = UIView()
     let itemViewTwo = UIView()
+    let dateLabel = GFBodyLabel(textAlignment: .center)
     
     var username: String!
     var user: User?
+    
+    weak var delegate: FollowerListVCDelegate!
     
     init(username: String) {
         super.init(nibName: nil, bundle: nil)
@@ -39,7 +47,7 @@ class UserInfoVC: UIViewController {
     }
     
     private func configureUI() {
-        [headerView, itemViewOne, itemViewTwo].forEach { view in
+        [headerView, itemViewOne, itemViewTwo, dateLabel].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview(view)
         }
@@ -62,16 +70,37 @@ class UserInfoVC: UIViewController {
             itemViewTwo.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
             itemViewTwo.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
             itemViewTwo.heightAnchor.constraint(equalToConstant: itemHeight),
+            
+            dateLabel.topAnchor.constraint(equalTo: itemViewTwo.bottomAnchor, constant: padding),
+            dateLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: padding),
+            dateLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -padding),
+            dateLabel.heightAnchor.constraint(equalToConstant: 18)
         ])
     }
     
     private func getUserInfo() {
         Task {
-            user = try await NetworkProvider.shared.execute(GetUserRequest(username: username))
-            self.add(childVC: GFUserInfoHeaderVC(user: user!), to: self.headerView)
-            self.add(childVC: GFRepoItemVC(user: user!), to: self.itemViewOne)
-            self.add(childVC: GFFollowerItemVC(user: user!), to: self.itemViewTwo)
+            do {
+                let user = try await NetworkProvider.shared.execute(GetUserRequest(username: username))
+                self.configureUIElements(with: user)
+            } catch  {
+                let networkError = error as? NetworkError
+                self.presentGFAlertOnMainThread(title: "Something went wrong", message: networkError?.rawValue ?? "", buttonTitle: "OK")
+            }
         }
+    }
+    
+    private func configureUIElements(with user: User) {
+        let repoItemVC = GFRepoItemVC(user: user)
+        repoItemVC.delegate = self
+        
+        let followerItemVC = GFFollowerItemVC(user: user)
+        followerItemVC.delegate = self
+        
+        self.add(childVC: GFUserInfoHeaderVC(user: user), to: self.headerView)
+        self.add(childVC: repoItemVC, to: self.itemViewOne)
+        self.add(childVC: followerItemVC, to: self.itemViewTwo)
+        dateLabel.text = "GitHub Since \(user.createdAt.convertToDisplayFormat())"
     }
     
     private func add(childVC: UIViewController, to containerView: UIView) {
@@ -86,6 +115,21 @@ class UserInfoVC: UIViewController {
     }
 }
 
-#Preview {
-    return UserInfoVC(username: "hakanor")
+extension UserInfoVC: UserInfoVCDelegate {
+    func didTapGitHubProfile(for user: User) {
+        guard let url = URL(string: user.htmlUrl) else {
+            presentGFAlertOnMainThread(title: "Invalid Url", message: "The url attached to this user is invalid.", buttonTitle: "OK")
+            return
+        }
+        presentSafariVC(with: url)
+    }
+    
+    func didTapGetFollowers(for user: User) {
+        guard user.followers != 0 else {
+            presentGFAlertOnMainThread(title: "No followers", message: "This user has no followers.", buttonTitle: "OK")
+            return
+        }
+        delegate.didRequestFollowers(for: user.login)
+        self.dismssVC()
+    }
 }
